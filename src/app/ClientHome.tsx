@@ -1,15 +1,20 @@
 'use client'
 
-import { useState, useMemo } from 'react'
-import Dashboard from '@/components/Dashboard'
-import NewClientModal from '@/components/NewClientModal'
-import NewProductModal from '@/components/NewProductModal'
+import { useState } from 'react'
+import Dashboard from '../components/Dashboard'
+import NewClientModal from '../components/NewClientModal'
+import NewProductModal from '../components/NewProductModal'
 
 export default function HomePage({
     stats,
     recentRentals
 }: {
-    stats: any,
+    stats: {
+        activeRentals: number
+        totalProducts: number
+        totalClients: number
+        pendingPayments: number
+    },
     recentRentals: any[]
 }) {
     const [modalOpen, setModalOpen] = useState<'client' | 'product' | 'rental' | null>(null)
@@ -19,7 +24,7 @@ export default function HomePage({
             <Dashboard
                 stats={stats}
                 recentRentals={recentRentals}
-                onAction={(action) => setModalOpen(action)}
+                onAction={(action: 'client' | 'product' | 'rental') => setModalOpen(action)}
             />
 
             <NewClientModal

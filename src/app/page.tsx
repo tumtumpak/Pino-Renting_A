@@ -21,7 +21,7 @@ export default async function Page() {
     where: { paymentStatus: false },
     select: { totalPrice: true }
   })
-  const pendingTotal = pendingRentals.reduce((sum, r) => sum + r.totalPrice, 0)
+  const pendingTotal = pendingRentals.reduce((sum: number, r: { totalPrice: number }) => sum + r.totalPrice, 0)
 
   const stats = {
     activeRentals: activeRentalsCount,
