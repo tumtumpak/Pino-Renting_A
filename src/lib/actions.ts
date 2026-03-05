@@ -19,6 +19,21 @@ export async function createClient(formData: FormData) {
     revalidatePath('/clients')
 }
 
+export async function updateClient(id: string, data: { name?: string; dni?: string; observations?: string }) {
+    await prisma.client.update({
+        where: { id },
+        data
+    })
+    revalidatePath('/')
+    revalidatePath('/clients')
+}
+
+export async function deleteClient(id: string) {
+    await prisma.client.delete({ where: { id } })
+    revalidatePath('/')
+    revalidatePath('/clients')
+}
+
 // --- PRODUCT ACTIONS ---
 
 export async function createProduct(formData: FormData) {
@@ -30,6 +45,21 @@ export async function createProduct(formData: FormData) {
         data: { name, totalStock, pricePerUnit }
     })
 
+    revalidatePath('/')
+    revalidatePath('/products')
+}
+
+export async function updateProduct(id: string, data: { name?: string; totalStock?: number; pricePerUnit?: number }) {
+    await prisma.product.update({
+        where: { id },
+        data
+    })
+    revalidatePath('/')
+    revalidatePath('/products')
+}
+
+export async function deleteProduct(id: string) {
+    await prisma.product.delete({ where: { id } })
     revalidatePath('/')
     revalidatePath('/products')
 }

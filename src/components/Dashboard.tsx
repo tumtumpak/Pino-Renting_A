@@ -23,12 +23,14 @@ export default function Dashboard({ stats, recentRentals, onAction }: DashboardP
 
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-                <StatCard
-                    title="Alquileres Activos"
-                    value={stats.activeRentals.toString()}
-                    icon={<Calendar className="text-blue-400" />}
-                    trend="En curso"
-                />
+                <Link href="/rentals" className="block">
+                    <StatCard
+                        title="Alquileres Activos"
+                        value={stats.activeRentals.toString()}
+                        icon={<Calendar className="text-blue-400" />}
+                        trend="Ver Pedidos"
+                    />
+                </Link>
                 <Link href="/products" className="block">
                     <StatCard
                         title="Productos en Stock"
