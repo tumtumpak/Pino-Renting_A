@@ -22,7 +22,7 @@ export default async function ProductsPage() {
             </header>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {products.map((product) => (
+                {products.map((product: any) => (
                     <div key={product.id} className="glass p-6 hover-scale border-white/10">
                         <div className="flex justify-between items-start mb-4">
                             <div className="p-2 bg-white/5 rounded-lg border border-white/10">

@@ -1,4 +1,5 @@
 import { Package, Users, Calendar, TrendingUp, AlertCircle } from 'lucide-react';
+import Link from 'next/link';
 
 interface DashboardProps {
     stats: {

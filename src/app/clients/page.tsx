@@ -33,7 +33,7 @@ export default async function ClientsPage() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-white/5">
-                            {clients.map((client) => (
+                            {clients.map((client: any) => (
                                 <tr key={client.id} className="group hover:bg-white/[0.02] transition-colors">
                                     <td className="py-4 font-medium">{client.name}</td>
                                     <td className="py-4 text-slate-400">{client.dni}</td>
