@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/db'
 import HomePage from './ClientHome'
 
+export const dynamic = 'force-dynamic'
+
 export default async function Page() {
   // Obtener datos reales de la BD
   const [activeRentalsCount, totalProducts, totalClients, rentals] = await Promise.all([
