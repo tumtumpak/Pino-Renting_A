@@ -1,4 +1,4 @@
-import { Package, Users, Calendar, TrendingUp, AlertCircle } from 'lucide-react';
+import { Package, Users, Calendar, TrendingUp, AlertCircle, History as HistoryIcon } from 'lucide-react';
 import Link from 'next/link';
 
 interface DashboardProps {
@@ -117,7 +117,7 @@ export default function Dashboard({ stats, recentRentals, onAction }: DashboardP
             </div>
             <div className="mt-6 pt-4 border-t border-white/5 flex justify-center">
                 <Link href="/history" className="text-xs text-blue-400 hover:text-blue-300 transition-colors font-semibold uppercase tracking-widest flex items-center gap-2">
-                    Ver Todo el Historial <History size={12} />
+                    Ver Todo el Historial <HistoryIcon size={12} />
                 </Link>
             </div>
         </div>

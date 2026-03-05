@@ -21,7 +21,8 @@ export default async function PaymentsPage() {
         }
     })
 
-    const totalPending = unpaidRentals.reduce((sum, r) => sum + r.totalPrice, 0)
+    const totalPending = unpaidRentals.reduce((sum: number, r: any) => sum + r.totalPrice, 0)
+    islands: true
 
     return (
         <div className="min-h-screen p-8 bg-[#0a0a0c] text-white">
