@@ -47,12 +47,14 @@ export default function Dashboard({ stats, recentRentals, onAction }: DashboardP
                         trend="Ver Directorio"
                     />
                 </Link>
-                <StatCard
-                    title="Pendiente Cobro"
-                    value={`${stats.pendingPayments} €`}
-                    icon={<AlertCircle className="text-amber-400" />}
-                    trend="Total impagos"
-                />
+                <Link href="/payments" className="block">
+                    <StatCard
+                        title="Pendiente Cobro"
+                        value={`${stats.pendingPayments} €`}
+                        icon={<AlertCircle className="text-amber-400" />}
+                        trend="Total impagos"
+                    />
+                </Link>
             </div>
 
             {/* Main Content Layout */}
@@ -112,6 +114,11 @@ export default function Dashboard({ stats, recentRentals, onAction }: DashboardP
                         </button>
                     </div>
                 </div>
+            </div>
+            <div className="mt-6 pt-4 border-t border-white/5 flex justify-center">
+                <Link href="/history" className="text-xs text-blue-400 hover:text-blue-300 transition-colors font-semibold uppercase tracking-widest flex items-center gap-2">
+                    Ver Todo el Historial <History size={12} />
+                </Link>
             </div>
         </div>
     );
