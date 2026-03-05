@@ -11,10 +11,19 @@ export default async function Page() {
     pendingPayments: 0
   }
   let rentals: any[] = []
+  let allClients: any[] = []
+  let allProducts: any[] = []
 
   try {
     // Obtener datos reales de la BD
-    const [activeRentalsCount, totalProductsCount, totalClientsCount, rentalsList] = await Promise.all([
+    const [
+      activeRentalsCount,
+      totalProductsCount,
+      totalClientsCount,
+      rentalsList,
+      clientsList,
+      productsList
+    ] = await Promise.all([
       prisma.rental.count({ where: { status: { in: ['PENDING', 'DELIVERED'] } } }),
       prisma.product.count(),
       prisma.client.count(),
@@ -22,7 +31,9 @@ export default async function Page() {
         take: 5,
         orderBy: { startDate: 'asc' },
         include: { client: true }
-      })
+      }),
+      prisma.client.findMany({ orderBy: { name: 'asc' } }),
+      prisma.product.findMany({ orderBy: { name: 'asc' } })
     ])
 
     // Calcular pagos pendientes
@@ -39,9 +50,11 @@ export default async function Page() {
       pendingPayments: pendingTotal
     }
     rentals = rentalsList
+    allClients = clientsList
+    allProducts = productsList
   } catch (error) {
     console.error('Prisma failed during build/render:', error)
   }
 
-  return <HomePage stats={stats} recentRentals={rentals} />
+  return <HomePage stats={stats} recentRentals={rentals} allClients={allClients} allProducts={allProducts} />
 }

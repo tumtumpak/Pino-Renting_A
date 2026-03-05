@@ -28,18 +28,22 @@ export default function Dashboard({ stats, recentRentals, onAction }: DashboardP
                     icon={<Calendar className="text-blue-400" />}
                     trend="En curso"
                 />
-                <StatCard
-                    title="Productos en Stock"
-                    value={stats.totalProducts.toLocaleString()}
-                    icon={<Package className="text-emerald-400" />}
-                    trend="Inventario total"
-                />
-                <StatCard
-                    title="Clientes Totales"
-                    value={stats.totalClients.toString()}
-                    icon={<Users className="text-indigo-400" />}
-                    trend="Base de datos"
-                />
+                <Link href="/products" className="block">
+                    <StatCard
+                        title="Productos en Stock"
+                        value={stats.totalProducts.toLocaleString()}
+                        icon={<Package className="text-emerald-400" />}
+                        trend="Ver Inventario"
+                    />
+                </Link>
+                <Link href="/clients" className="block">
+                    <StatCard
+                        title="Clientes Totales"
+                        value={stats.totalClients.toString()}
+                        icon={<Users className="text-indigo-400" />}
+                        trend="Ver Directorio"
+                    />
+                </Link>
                 <StatCard
                     title="Pendiente Cobro"
                     value={`${stats.pendingPayments} €`}
@@ -66,8 +70,8 @@ export default function Dashboard({ stats, recentRentals, onAction }: DashboardP
                                     </p>
                                 </div>
                                 <span className={`px-3 py-1 rounded-full text-xs font-medium ${rental.status === 'PENDING' ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' :
-                                        rental.status === 'DELIVERED' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' :
-                                            'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                                    rental.status === 'DELIVERED' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' :
+                                        'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
                                     }`}>
                                     {rental.status}
                                 </span>

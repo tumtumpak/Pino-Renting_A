@@ -4,10 +4,13 @@ import { useState } from 'react'
 import Dashboard from '../components/Dashboard'
 import NewClientModal from '../components/NewClientModal'
 import NewProductModal from '../components/NewProductModal'
+import NewRentalModal from '../components/NewRentalModal'
 
 export default function HomePage({
     stats,
-    recentRentals
+    recentRentals,
+    allClients,
+    allProducts
 }: {
     stats: {
         activeRentals: number
@@ -15,7 +18,9 @@ export default function HomePage({
         totalClients: number
         pendingPayments: number
     },
-    recentRentals: any[]
+    recentRentals: any[],
+    allClients: any[],
+    allProducts: any[]
 }) {
     const [modalOpen, setModalOpen] = useState<'client' | 'product' | 'rental' | null>(null)
 
@@ -37,7 +42,12 @@ export default function HomePage({
                 onClose={() => setModalOpen(null)}
             />
 
-            {/* El modal de alquiler se puede implementar en una ruta separada o aquí mismo */}
+            <NewRentalModal
+                isOpen={modalOpen === 'rental'}
+                onClose={() => setModalOpen(null)}
+                clients={allClients}
+                products={allProducts}
+            />
         </>
     )
 }
