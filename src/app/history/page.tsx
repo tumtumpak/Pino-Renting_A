@@ -2,7 +2,7 @@ import { prisma } from '@/lib/db'
 import Link from 'next/link'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
-import { History, Search } from 'lucide-react'
+import { History as HistoryIcon, Search } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
 
@@ -80,7 +80,7 @@ export default async function HistoryPage() {
                                 <tr>
                                     <td colSpan={4} className="p-32 text-center">
                                         <div className="flex flex-col items-center gap-4 text-slate-600">
-                                            <History size={48} className="opacity-10" />
+                                            <HistoryIcon size={48} className="opacity-10" />
                                             <p className="font-medium">No hay registros en el historial todavía.</p>
                                         </div>
                                     </td>
