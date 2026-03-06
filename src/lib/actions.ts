@@ -92,7 +92,7 @@ export async function createRental(data: {
 
     // 3. Crear alquiler y sus items
     try {
-        const rental = await prisma.rental.create({
+        await prisma.rental.create({
             data: {
                 clientId: data.clientId,
                 startDate: start,
@@ -111,10 +111,10 @@ export async function createRental(data: {
 
         revalidatePath('/')
         revalidatePath('/rentals')
-        return JSON.parse(JSON.stringify(rental))
+        return { success: true }
     } catch (error: any) {
         console.error('Error creating rental:', error)
-        throw new Error(error.message || 'Falló la creación del alquiler')
+        return { error: error.message || 'Falló la creación del alquiler' }
     }
 }
 

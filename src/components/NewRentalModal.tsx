@@ -64,7 +64,7 @@ export default function NewRentalModal({
 
         setLoading(true)
         try {
-            await createRental({
+            const response = await createRental({
                 clientId: selectedClientId,
                 startDate,
                 endDate,
@@ -72,6 +72,11 @@ export default function NewRentalModal({
                 observations,
                 items
             })
+
+            if (response && (response as any).error) {
+                throw new Error((response as any).error)
+            }
+
             onClose()
             setItems([])
             setSelectedClientId('')
@@ -105,8 +110,12 @@ export default function NewRentalModal({
                                 onChange={(e) => setSelectedClientId(e.target.value)}
                                 className="w-full p-3 rounded-lg bg-white/5 border border-white/10 focus:border-blue-500 transition-colors outline-none"
                             >
-                                <option value="">Seleccionar cliente...</option>
-                                {clients.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                                <option value="" className="bg-slate-900 text-white">Seleccionar cliente...</option>
+                                {clients.map(c => (
+                                    <option key={c.id} value={c.id} className="bg-slate-900 text-white">
+                                        {c.name}
+                                    </option>
+                                ))}
                             </select>
                         </div>
                         <div>
@@ -172,9 +181,9 @@ export default function NewRentalModal({
                                             onChange={(e) => updateItem(index, 'productId', e.target.value)}
                                             className="w-full p-3 rounded-lg bg-white/5 border border-white/10 focus:border-blue-500 transition-colors outline-none"
                                         >
-                                            <option value="">Producto...</option>
+                                            <option value="" className="bg-slate-910 text-white">Producto...</option>
                                             {products.map(p => (
-                                                <option key={p.id} value={p.id}>
+                                                <option key={p.id} value={p.id} className="bg-slate-900 text-white">
                                                     {p.name} ({p.pricePerUnit}€)
                                                 </option>
                                             ))}
