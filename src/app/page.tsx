@@ -49,9 +49,9 @@ export default async function Page() {
       totalClients: totalClientsCount,
       pendingPayments: pendingTotal
     }
-    rentals = rentalsList
-    allClients = clientsList
-    allProducts = productsList
+    rentals = JSON.parse(JSON.stringify(rentalsList))
+    allClients = JSON.parse(JSON.stringify(clientsList))
+    allProducts = JSON.parse(JSON.stringify(productsList))
   } catch (error) {
     console.error('Prisma failed during build/render:', error)
   }

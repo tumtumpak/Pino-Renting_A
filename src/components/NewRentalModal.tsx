@@ -75,8 +75,9 @@ export default function NewRentalModal({
             onClose()
             setItems([])
             setSelectedClientId('')
-        } catch (error) {
-            alert('Error: ' + (error as Error).message)
+        } catch (error: any) {
+            console.error('Submission error:', error)
+            alert('Error al crear el alquiler: ' + (error.message || 'Error desconocido del servidor'))
         } finally {
             setLoading(false)
         }
@@ -104,8 +105,8 @@ export default function NewRentalModal({
                                 onChange={(e) => setSelectedClientId(e.target.value)}
                                 className="w-full p-3 rounded-lg bg-white/5 border border-white/10 focus:border-blue-500 transition-colors outline-none"
                             >
-                                <option value="" className="bg-[#0a0a0c]">Seleccionar cliente...</option>
-                                {clients.map(c => <option key={c.id} value={c.id} className="bg-[#0a0a0c]">{c.name}</option>)}
+                                <option value="">Seleccionar cliente...</option>
+                                {clients.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                             </select>
                         </div>
                         <div>
@@ -171,9 +172,9 @@ export default function NewRentalModal({
                                             onChange={(e) => updateItem(index, 'productId', e.target.value)}
                                             className="w-full p-3 rounded-lg bg-white/5 border border-white/10 focus:border-blue-500 transition-colors outline-none"
                                         >
-                                            <option value="" className="bg-[#0a0a0c]">Producto...</option>
+                                            <option value="">Producto...</option>
                                             {products.map(p => (
-                                                <option key={p.id} value={p.id} className="bg-[#0a0a0c]">
+                                                <option key={p.id} value={p.id}>
                                                     {p.name} ({p.pricePerUnit}€)
                                                 </option>
                                             ))}
