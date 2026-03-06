@@ -84,12 +84,17 @@ export async function createRental(data: {
             return { error: validation.errors.join(', ') }
         }
 
-        // 2. Calcular precio total
+        // 2. Calcular precio total y validar límites
         let total = 0
+        const MAX_INT = 2147483647
+
         for (const item of data.items) {
+            if (item.quantity > MAX_INT) return { error: `La cantidad de ${item.productId} es demasiado alta.` }
             const product = await prisma.product.findUnique({ where: { id: item.productId } })
             total += (product?.pricePerUnit || 0) * item.quantity
         }
+
+        if (total > 1000000000) return { error: 'El precio total excede el límite permitido para un solo alquiler.' }
 
         // 3. Crear alquiler y sus items
         await prisma.rental.create({
@@ -100,6 +105,7 @@ export async function createRental(data: {
                 venue: data.venue,
                 observations: data.observations,
                 totalPrice: total,
+                status: 'PENDING',
                 items: {
                     create: data.items.map(item => ({
                         productId: item.productId,
@@ -114,7 +120,8 @@ export async function createRental(data: {
         return { success: true }
     } catch (error: any) {
         console.error('Error creating rental:', error)
-        return { error: error.message || 'Error de conexión con la base de datos' }
+        // Devolver un objeto plano para evitar fallos de serialización en Vercel
+        return { error: 'No se pudo guardar el alquiler. Verifica los datos o la conexión.' }
     }
 }
 

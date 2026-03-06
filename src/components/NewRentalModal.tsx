@@ -108,7 +108,7 @@ export default function NewRentalModal({
                                 required
                                 value={selectedClientId}
                                 onChange={(e) => setSelectedClientId(e.target.value)}
-                                className="w-full p-3 rounded-lg bg-[#1a1a1e] border border-white/10 focus:border-blue-500 transition-colors outline-none text-white"
+                                className="w-full p-3 rounded-lg bg-slate-900 border border-white/20 focus:border-blue-500 transition-colors outline-none text-white shadow-xl"
                             >
                                 <option value="">Seleccionar cliente...</option>
                                 {clients.map(c => (
@@ -179,7 +179,7 @@ export default function NewRentalModal({
                                             required
                                             value={item.productId}
                                             onChange={(e) => updateItem(index, 'productId', e.target.value)}
-                                            className="w-full p-3 rounded-lg bg-[#1a1a1e] border border-white/10 focus:border-blue-500 transition-colors outline-none text-white"
+                                            className="w-full p-3 rounded-lg bg-slate-900 border border-white/20 focus:border-blue-500 transition-colors outline-none text-white shadow-xl"
                                         >
                                             <option value="">Producto...</option>
                                             {products.map(p => (
