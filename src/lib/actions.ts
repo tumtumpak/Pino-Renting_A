@@ -74,10 +74,18 @@ export async function createRental(data: {
     items: { productId: string; quantity: number }[]
     observations?: string
 }) {
-    const start = new Date(data.startDate)
-    const end = new Date(data.endDate)
-
     try {
+        if (!data.clientId || !data.startDate || !data.endDate || data.items.length === 0) {
+            return { error: 'Faltan datos obligatorios para crear el alquiler.' }
+        }
+
+        const start = new Date(data.startDate)
+        const end = new Date(data.endDate)
+
+        if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+            return { error: 'Las fechas seleccionadas no son válidas.' }
+        }
+
         // 1. Validar stock dinámico
         const validation = await validateRentalStock(data.items, start, end)
         if (!validation.valid) {
@@ -86,15 +94,19 @@ export async function createRental(data: {
 
         // 2. Calcular precio total y validar límites
         let total = 0
-        const MAX_INT = 2147483647
+        const MAX_SAFE_VALUE = 999999999
 
         for (const item of data.items) {
-            if (item.quantity > MAX_INT) return { error: `La cantidad de ${item.productId} es demasiado alta.` }
+            if (!item.productId) return { error: 'Uno de los productos no es válido.' }
+            if (item.quantity <= 0 || item.quantity > 1000000) return { error: 'Cantidad de producto no válida o demasiado alta.' }
+
             const product = await prisma.product.findUnique({ where: { id: item.productId } })
-            total += (product?.pricePerUnit || 0) * item.quantity
+            if (!product) return { error: `Producto no encontrado: ${item.productId}` }
+
+            total += (product.pricePerUnit || 0) * item.quantity
         }
 
-        if (total > 1000000000) return { error: 'El precio total excede el límite permitido para un solo alquiler.' }
+        if (total > MAX_SAFE_VALUE) return { error: 'El precio total es demasiado alto para procesarlo.' }
 
         // 3. Crear alquiler y sus items
         await prisma.rental.create({
@@ -102,8 +114,8 @@ export async function createRental(data: {
                 clientId: data.clientId,
                 startDate: start,
                 endDate: end,
-                venue: data.venue,
-                observations: data.observations,
+                venue: data.venue || '',
+                observations: data.observations || '',
                 totalPrice: total,
                 status: 'PENDING',
                 items: {
@@ -119,9 +131,8 @@ export async function createRental(data: {
         revalidatePath('/rentals')
         return { success: true }
     } catch (error: any) {
-        console.error('Error creating rental:', error)
-        // Devolver un objeto plano para evitar fallos de serialización en Vercel
-        return { error: 'No se pudo guardar el alquiler. Verifica los datos o la conexión.' }
+        console.error('SERVER ACTION ERROR (createRental):', error)
+        return { error: 'Error interno del servidor. Comprueba la conexión o que los datos no sean extremos.' }
     }
 }
 
