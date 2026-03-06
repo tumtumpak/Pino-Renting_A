@@ -185,7 +185,7 @@ export default function NewRentalModal({
                                             min="1"
                                             required
                                             value={item.quantity}
-                                            onChange={(e) => updateItem(index, 'quantity', parseInt(e.target.value))}
+                                            onChange={(e) => updateItem(index, 'quantity', parseInt(e.target.value) || 1)}
                                             className="w-full p-3 rounded-lg bg-white/5 border border-white/10 focus:border-blue-500 transition-colors outline-none"
                                         />
                                     </div>
