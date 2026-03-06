@@ -91,26 +91,31 @@ export async function createRental(data: {
     }
 
     // 3. Crear alquiler y sus items
-    const rental = await prisma.rental.create({
-        data: {
-            clientId: data.clientId,
-            startDate: start,
-            endDate: end,
-            venue: data.venue,
-            observations: data.observations,
-            totalPrice: total,
-            items: {
-                create: data.items.map(item => ({
-                    productId: item.productId,
-                    quantity: item.quantity
-                }))
+    try {
+        const rental = await prisma.rental.create({
+            data: {
+                clientId: data.clientId,
+                startDate: start,
+                endDate: end,
+                venue: data.venue,
+                observations: data.observations,
+                totalPrice: total,
+                items: {
+                    create: data.items.map(item => ({
+                        productId: item.productId,
+                        quantity: item.quantity
+                    }))
+                }
             }
-        }
-    })
+        })
 
-    revalidatePath('/')
-    revalidatePath('/rentals')
-    return rental
+        revalidatePath('/')
+        revalidatePath('/rentals')
+        return JSON.parse(JSON.stringify(rental))
+    } catch (error: any) {
+        console.error('Error creating rental:', error)
+        throw new Error(error.message || 'Falló la creación del alquiler')
+    }
 }
 
 export async function updateRentalStatus(id: string, status: 'PENDING' | 'DELIVERED' | 'RETURNED' | 'CANCELLED') {

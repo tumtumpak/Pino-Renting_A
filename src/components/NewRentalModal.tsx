@@ -102,7 +102,7 @@ export default function NewRentalModal({
                                 required
                                 value={selectedClientId}
                                 onChange={(e) => setSelectedClientId(e.target.value)}
-                                className="w-full p-3 rounded-lg bg-white/5 border border-white/10 focus:border-blue-500 transition-colors outline-none appearance-none"
+                                className="w-full p-3 rounded-lg bg-white/5 border border-white/10 focus:border-blue-500 transition-colors outline-none"
                             >
                                 <option value="" className="bg-[#0a0a0c]">Seleccionar cliente...</option>
                                 {clients.map(c => <option key={c.id} value={c.id} className="bg-[#0a0a0c]">{c.name}</option>)}
@@ -169,7 +169,7 @@ export default function NewRentalModal({
                                             required
                                             value={item.productId}
                                             onChange={(e) => updateItem(index, 'productId', e.target.value)}
-                                            className="w-full p-3 rounded-lg bg-white/5 border border-white/10 focus:border-blue-500 transition-colors outline-none appearance-none"
+                                            className="w-full p-3 rounded-lg bg-white/5 border border-white/10 focus:border-blue-500 transition-colors outline-none"
                                         >
                                             <option value="" className="bg-[#0a0a0c]">Producto...</option>
                                             {products.map(p => (
