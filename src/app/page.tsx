@@ -52,8 +52,17 @@ export default async function Page() {
     rentals = rentalsList
     allClients = clientsList
     allProducts = productsList
-  } catch (error) {
+  } catch (error: any) {
     console.error('Prisma failed during build/render:', error)
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#0a0a0c] text-white p-8 font-mono text-xs">
+        <div className="max-w-2xl bg-red-500/10 border border-red-500/20 p-6 rounded-lg">
+          <h1 className="text-red-400 font-bold mb-4">CRITICAL CONNECTION ERROR</h1>
+          <pre className="whitespace-pre-wrap">{error.message || 'Unknown database error'}</pre>
+          <div className="mt-4 text-slate-500 italic">Check DATABASE_URL and Supabase Pooler settings.</div>
+        </div>
+      </div>
+    )
   }
 
   return <HomePage stats={stats} recentRentals={rentals} allClients={allClients} allProducts={allProducts} />
