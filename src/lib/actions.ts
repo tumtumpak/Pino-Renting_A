@@ -77,21 +77,21 @@ export async function createRental(data: {
     const start = new Date(data.startDate)
     const end = new Date(data.endDate)
 
-    // 1. Validar stock dinámico
-    const validation = await validateRentalStock(data.items, start, end)
-    if (!validation.valid) {
-        throw new Error(validation.errors.join(', '))
-    }
-
-    // 2. Calcular precio total (opcional aquí o en el cliente)
-    let total = 0
-    for (const item of data.items) {
-        const product = await prisma.product.findUnique({ where: { id: item.productId } })
-        total += (product?.pricePerUnit || 0) * item.quantity
-    }
-
-    // 3. Crear alquiler y sus items
     try {
+        // 1. Validar stock dinámico
+        const validation = await validateRentalStock(data.items, start, end)
+        if (!validation.valid) {
+            return { error: validation.errors.join(', ') }
+        }
+
+        // 2. Calcular precio total
+        let total = 0
+        for (const item of data.items) {
+            const product = await prisma.product.findUnique({ where: { id: item.productId } })
+            total += (product?.pricePerUnit || 0) * item.quantity
+        }
+
+        // 3. Crear alquiler y sus items
         await prisma.rental.create({
             data: {
                 clientId: data.clientId,
@@ -114,7 +114,7 @@ export async function createRental(data: {
         return { success: true }
     } catch (error: any) {
         console.error('Error creating rental:', error)
-        return { error: error.message || 'Falló la creación del alquiler' }
+        return { error: error.message || 'Error de conexión con la base de datos' }
     }
 }
 

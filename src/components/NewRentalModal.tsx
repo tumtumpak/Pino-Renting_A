@@ -108,11 +108,11 @@ export default function NewRentalModal({
                                 required
                                 value={selectedClientId}
                                 onChange={(e) => setSelectedClientId(e.target.value)}
-                                className="w-full p-3 rounded-lg bg-white/5 border border-white/10 focus:border-blue-500 transition-colors outline-none"
+                                className="w-full p-3 rounded-lg bg-[#1a1a1e] border border-white/10 focus:border-blue-500 transition-colors outline-none text-white"
                             >
-                                <option value="" className="bg-slate-900 text-white">Seleccionar cliente...</option>
+                                <option value="">Seleccionar cliente...</option>
                                 {clients.map(c => (
-                                    <option key={c.id} value={c.id} className="bg-slate-900 text-white">
+                                    <option key={c.id} value={c.id}>
                                         {c.name}
                                     </option>
                                 ))}
@@ -179,11 +179,11 @@ export default function NewRentalModal({
                                             required
                                             value={item.productId}
                                             onChange={(e) => updateItem(index, 'productId', e.target.value)}
-                                            className="w-full p-3 rounded-lg bg-white/5 border border-white/10 focus:border-blue-500 transition-colors outline-none"
+                                            className="w-full p-3 rounded-lg bg-[#1a1a1e] border border-white/10 focus:border-blue-500 transition-colors outline-none text-white"
                                         >
-                                            <option value="" className="bg-slate-910 text-white">Producto...</option>
+                                            <option value="">Producto...</option>
                                             {products.map(p => (
-                                                <option key={p.id} value={p.id} className="bg-slate-900 text-white">
+                                                <option key={p.id} value={p.id}>
                                                     {p.name} ({p.pricePerUnit}€)
                                                 </option>
                                             ))}
