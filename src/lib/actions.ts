@@ -141,17 +141,44 @@ export async function createRental(data: {
 }
 
 export async function updateRentalStatus(id: string, status: 'PENDING' | 'DELIVERED' | 'RETURNED' | 'CANCELLED') {
+    const data: any = { status }
+
+    // Si pasa a ENTREGADO y no tiene albarán, generamos uno
+    if (status === 'DELIVERED') {
+        const rental = await prisma.rental.findUnique({ where: { id } })
+        if (rental && !rental.deliveryNoteNumber) {
+            const year = new Date().getFullYear()
+            const count = await prisma.rental.count({
+                where: { deliveryNoteNumber: { startsWith: `ALB-${year}` } }
+            })
+            data.deliveryNoteNumber = `ALB-${year}-${(count + 1).toString().padStart(3, '0')}`
+        }
+    }
+
     await prisma.rental.update({
         where: { id },
-        data: { status }
+        data
     })
     revalidatePath('/')
 }
 
 export async function markAsPaid(id: string) {
+    const rental = await prisma.rental.findUnique({ where: { id } })
+    const data: any = { paymentStatus: true }
+
+    // Si se marca como pagado y no tiene factura, generamos una
+    if (rental && !rental.invoiceNumber) {
+        const year = new Date().getFullYear()
+        const count = await prisma.rental.count({
+            where: { invoiceNumber: { startsWith: `FAC-${year}` } }
+        })
+        data.invoiceNumber = `FAC-${year}-${(count + 1).toString().padStart(3, '0')}`
+        data.invoiceDate = new Date()
+    }
+
     await prisma.rental.update({
         where: { id },
-        data: { paymentStatus: true }
+        data
     })
     revalidatePath('/')
 }

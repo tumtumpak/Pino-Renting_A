@@ -37,6 +37,9 @@ model Rental {
   status            RentalStatus @default(PENDING)
   paymentStatus     Boolean      @default(false)
   totalPrice        Float        @default(0)
+  invoiceNumber     String?      @unique
+  deliveryNoteNumber String?     @unique
+  invoiceDate       DateTime?
   items             RentalItem[]
   payments          Payment[]
   createdAt         DateTime     @default(now())

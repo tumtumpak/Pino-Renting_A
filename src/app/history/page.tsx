@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { History as HistoryIcon, Search } from 'lucide-react'
+import RentalStatusActions from '@/components/RentalStatusActions'
 
 export const dynamic = 'force-dynamic'
 
@@ -51,28 +52,32 @@ export default async function HistoryPage() {
                         <tbody className="divide-y divide-white/5">
                             {historyRentals.map((rental: any) => (
                                 <tr key={rental.id} className="group hover:bg-white/[0.01] transition-colors">
-                                    <td className="p-6">
-                                        <div className="font-semibold text-slate-200">{rental.client.name}</div>
-                                        <div className="text-[10px] text-slate-500 mt-1 uppercase">
-                                            Cerrado el {format(new Date(rental.endDate), 'dd/MM/yyyy')}
+                                    <td className="p-6 text-right" colSpan={4}>
+                                        <div className="flex justify-between items-center w-full">
+                                            <div className="text-left">
+                                                <div className="font-semibold text-slate-200">{rental.client.name}</div>
+                                                <div className="text-[10px] text-slate-500 mt-1 uppercase">
+                                                    Cerrado el {format(new Date(rental.endDate), 'dd/MM/yyyy')}
+                                                </div>
+                                            </div>
+                                            <div className="text-left">
+                                                <div className="text-xs text-slate-400 leading-relaxed max-w-sm">
+                                                    {rental.items.map((item: any) => `${item.quantity}x ${item.product.name}`).join(', ')}
+                                                </div>
+                                            </div>
+                                            <div className="text-left">
+                                                <div className="font-mono text-sm text-slate-300">{rental.totalPrice.toFixed(2)}€</div>
+                                                <div className={`text-[9px] font-bold mt-1 ${rental.paymentStatus ? 'text-emerald-500/60' : 'text-red-500/60'}`}>
+                                                    {rental.paymentStatus ? 'PAGADO' : 'PENDIENTE'}
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center gap-4">
+                                                <span className={`px-2 py-0.5 rounded-sm text-[10px] font-black tracking-tighter uppercase border ${rental.status === 'RETURNED' ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' : 'bg-red-500/10 text-red-500 border-red-500/20'}`}>
+                                                    {rental.status === 'RETURNED' ? 'FINALIZADO' : 'CANCELADO'}
+                                                </span>
+                                                <RentalStatusActions rental={rental} />
+                                            </div>
                                         </div>
-                                    </td>
-                                    <td className="p-6">
-                                        <div className="text-xs text-slate-400 leading-relaxed max-w-sm">
-                                            {rental.items.map((item: any) => `${item.quantity}x ${item.product.name}`).join(', ')}
-                                        </div>
-                                    </td>
-                                    <td className="p-6">
-                                        <div className="font-mono text-sm text-slate-300">{rental.totalPrice.toFixed(2)}€</div>
-                                        <div className={`text-[9px] font-bold mt-1 ${rental.paymentStatus ? 'text-emerald-500/60' : 'text-red-500/60'}`}>
-                                            {rental.paymentStatus ? 'PAGADO COMPLETAMENTE' : 'CRÉDITO PENDIENTE'}
-                                        </div>
-                                    </td>
-                                    <td className="p-6">
-                                        <span className={`px-2 py-0.5 rounded-sm text-[10px] font-black tracking-tighter uppercase border ${rental.status === 'RETURNED' ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' : 'bg-red-500/10 text-red-500 border-red-500/20'
-                                            }`}>
-                                            {rental.status === 'RETURNED' ? 'FINALIZADO' : 'CANCELADO'}
-                                        </span>
                                     </td>
                                 </tr>
                             ))}

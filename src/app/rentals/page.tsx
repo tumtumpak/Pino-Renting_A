@@ -79,9 +79,7 @@ export default async function RentalsPage() {
                                     </td>
                                     <td className="p-4 text-right">
                                         <RentalStatusActions
-                                            rentalId={rental.id}
-                                            currentStatus={rental.status}
-                                            isPaid={rental.paymentStatus}
+                                            rental={rental}
                                         />
                                     </td>
                                 </tr>
