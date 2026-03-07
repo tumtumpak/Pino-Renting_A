@@ -86,6 +86,10 @@ export async function createRental(data: {
             return { error: 'Las fechas seleccionadas no son válidas.' }
         }
 
+        if (start >= end) {
+            return { error: 'La fecha de inicio debe ser anterior a la fecha de fin.' }
+        }
+
         // 1. Validar stock dinámico
         const validation = await validateRentalStock(data.items, start, end)
         if (!validation.valid) {
