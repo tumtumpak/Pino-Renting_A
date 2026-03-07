@@ -8,7 +8,7 @@ import { AlertCircle, CreditCard } from 'lucide-react'
 export const dynamic = 'force-dynamic'
 
 export default async function PaymentsPage() {
-    const unpaidRentals = await prisma.rental.findMany({
+    const unpaidRentalsRaw = await prisma.rental.findMany({
         where: { paymentStatus: false },
         orderBy: { startDate: 'desc' },
         include: {
@@ -20,6 +20,7 @@ export default async function PaymentsPage() {
             }
         }
     })
+    const unpaidRentals = JSON.parse(JSON.stringify(unpaidRentalsRaw))
 
     const totalPending = unpaidRentals.reduce((sum: number, r: any) => sum + r.totalPrice, 0)
     islands: true

@@ -8,7 +8,7 @@ import RentalStatusActions from '@/components/RentalStatusActions'
 export const dynamic = 'force-dynamic'
 
 export default async function HistoryPage() {
-    const historyRentals = await prisma.rental.findMany({
+    const historyRentalsRaw = await prisma.rental.findMany({
         where: { status: { in: ['RETURNED', 'CANCELLED'] } },
         orderBy: { endDate: 'desc' },
         include: {
@@ -20,6 +20,7 @@ export default async function HistoryPage() {
             }
         }
     })
+    const historyRentals = JSON.parse(JSON.stringify(historyRentalsRaw))
 
     return (
         <div className="min-h-screen p-8 bg-[#0a0a0c] text-white">
