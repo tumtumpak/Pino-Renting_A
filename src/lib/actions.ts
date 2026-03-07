@@ -7,61 +7,98 @@ import { validateRentalStock } from './inventory'
 // --- CLIENT ACTIONS ---
 
 export async function createClient(formData: FormData) {
-    const name = formData.get('name') as string
-    const dni = formData.get('dni') as string
-    const observations = formData.get('observations') as string
+    try {
+        const name = formData.get('name') as string
+        const dni = formData.get('dni') as string
+        const observations = formData.get('observations') as string
 
-    await prisma.client.create({
-        data: { name, dni, observations }
-    })
+        if (!name || !dni) return { error: 'Nombre y DNI son obligatorios.' }
 
-    revalidatePath('/')
-    revalidatePath('/clients')
+        await prisma.client.create({
+            data: { name, dni, observations }
+        })
+
+        revalidatePath('/')
+        revalidatePath('/clients')
+        return { success: true }
+    } catch (error: any) {
+        console.error('SERVER ACTION ERROR (createClient):', error)
+        if (error.code === 'P2002') return { error: 'Ya existe un cliente con ese DNI.' }
+        return { error: 'Error al conectar con la base de datos o datos inválidos.' }
+    }
 }
 
 export async function updateClient(id: string, data: { name?: string; dni?: string; observations?: string }) {
-    await prisma.client.update({
-        where: { id },
-        data
-    })
-    revalidatePath('/')
-    revalidatePath('/clients')
+    try {
+        await prisma.client.update({
+            where: { id },
+            data
+        })
+        revalidatePath('/')
+        revalidatePath('/clients')
+        return { success: true }
+    } catch (error) {
+        return { error: 'No se pudo actualizar el cliente.' }
+    }
 }
 
 export async function deleteClient(id: string) {
-    await prisma.client.delete({ where: { id } })
-    revalidatePath('/')
-    revalidatePath('/clients')
+    try {
+        await prisma.client.delete({ where: { id } })
+        revalidatePath('/')
+        revalidatePath('/clients')
+        return { success: true }
+    } catch (error) {
+        return { error: 'No se pudo eliminar el cliente. Asegúrate de que no tenga alquileres asociados.' }
+    }
 }
 
 // --- PRODUCT ACTIONS ---
 
 export async function createProduct(formData: FormData) {
-    const name = formData.get('name') as string
-    const totalStock = parseInt(formData.get('totalStock') as string)
-    const pricePerUnit = parseFloat(formData.get('pricePerUnit') as string)
+    try {
+        const name = formData.get('name') as string
+        const totalStock = parseInt(formData.get('totalStock') as string)
+        const pricePerUnit = parseFloat(formData.get('pricePerUnit') as string)
 
-    await prisma.product.create({
-        data: { name, totalStock, pricePerUnit }
-    })
+        if (!name || isNaN(totalStock)) return { error: 'Nombre y Stock son obligatorios.' }
 
-    revalidatePath('/')
-    revalidatePath('/products')
+        await prisma.product.create({
+            data: { name, totalStock, pricePerUnit }
+        })
+
+        revalidatePath('/')
+        revalidatePath('/products')
+        return { success: true }
+    } catch (error: any) {
+        console.error('SERVER ACTION ERROR (createProduct):', error)
+        return { error: 'Error al crear el producto. Revisa los datos.' }
+    }
 }
 
 export async function updateProduct(id: string, data: { name?: string; totalStock?: number; pricePerUnit?: number }) {
-    await prisma.product.update({
-        where: { id },
-        data
-    })
-    revalidatePath('/')
-    revalidatePath('/products')
+    try {
+        await prisma.product.update({
+            where: { id },
+            data
+        })
+        revalidatePath('/')
+        revalidatePath('/products')
+        return { success: true }
+    } catch (error) {
+        return { error: 'No se pudo actualizar el producto.' }
+    }
 }
 
 export async function deleteProduct(id: string) {
-    await prisma.product.delete({ where: { id } })
-    revalidatePath('/')
-    revalidatePath('/products')
+    try {
+        await prisma.product.delete({ where: { id } })
+        revalidatePath('/')
+        revalidatePath('/products')
+        return { success: true }
+    } catch (error) {
+        return { error: 'No se pudo eliminar el producto.' }
+    }
 }
 
 // --- RENTAL ACTIONS ---

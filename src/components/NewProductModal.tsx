@@ -14,10 +14,14 @@ export default function NewProductModal({ isOpen, onClose }: { isOpen: boolean, 
         setLoading(true)
         const formData = new FormData(e.currentTarget)
         try {
-            await createProduct(formData)
-            onClose()
+            const result = await createProduct(formData)
+            if (result?.error) {
+                alert(result.error)
+            } else {
+                onClose()
+            }
         } catch (error) {
-            alert('Error al crear producto: ' + (error as Error).message)
+            alert('Error crítico: No se pudo contactar con el servidor.')
         } finally {
             setLoading(false)
         }

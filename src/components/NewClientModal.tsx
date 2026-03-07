@@ -14,10 +14,14 @@ export default function NewClientModal({ isOpen, onClose }: { isOpen: boolean, o
         setLoading(true)
         const formData = new FormData(e.currentTarget)
         try {
-            await createClient(formData)
-            onClose()
+            const result = await createClient(formData)
+            if (result?.error) {
+                alert(result.error)
+            } else {
+                onClose()
+            }
         } catch (error) {
-            alert('Error al crear cliente: ' + (error as Error).message)
+            alert('Error crítico: No se pudo contactar con el servidor.')
         } finally {
             setLoading(false)
         }
