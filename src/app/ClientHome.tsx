@@ -10,7 +10,9 @@ export default function HomePage({
     stats,
     recentRentals,
     allClients,
-    allProducts
+    allProducts,
+    chartData,
+    topProducts
 }: {
     stats: {
         activeRentals: number
@@ -20,7 +22,9 @@ export default function HomePage({
     },
     recentRentals: any[],
     allClients: any[],
-    allProducts: any[]
+    allProducts: any[],
+    chartData: any[],
+    topProducts: any[]
 }) {
     const [modalOpen, setModalOpen] = useState<'client' | 'product' | 'rental' | null>(null)
 
@@ -29,6 +33,8 @@ export default function HomePage({
             <Dashboard
                 stats={stats}
                 recentRentals={recentRentals}
+                chartData={chartData}
+                topProducts={topProducts}
                 onAction={(action: 'client' | 'product' | 'rental') => setModalOpen(action)}
             />
 

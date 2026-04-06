@@ -1,5 +1,9 @@
-import { Package, Users, Calendar, TrendingUp, AlertCircle, History as HistoryIcon } from 'lucide-react';
+import { Package, Users, Calendar, TrendingUp, AlertCircle, History as HistoryIcon, BarChart3, LineChart as LineChartIcon } from 'lucide-react';
 import Link from 'next/link';
+import { 
+    LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
+    BarChart, Bar, Cell 
+} from 'recharts';
 
 interface DashboardProps {
     stats: {
@@ -9,10 +13,14 @@ interface DashboardProps {
         pendingPayments: number
     }
     recentRentals: any[]
+    chartData: any[]
+    topProducts: any[]
     onAction: (action: 'client' | 'product' | 'rental') => void
 }
 
-export default function Dashboard({ stats, recentRentals, onAction }: DashboardProps) {
+export default function Dashboard({ stats, recentRentals, chartData, topProducts, onAction }: DashboardProps) {
+    const COLORS = ['#60a5fa', '#34d399', '#818cf8', '#f59e0b', '#ec4899'];
+
     return (
         <div className="min-h-screen p-8 bg-[#0a0a0c] text-white">
             {/* Header */}
@@ -55,6 +63,82 @@ export default function Dashboard({ stats, recentRentals, onAction }: DashboardP
                         trend="Total impagos"
                     />
                 </Link>
+            </div>
+
+            {/* Charts Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                <div className="glass p-6">
+                  <div className="flex items-center gap-2 mb-6 text-blue-400">
+                    <LineChartIcon size={20} />
+                    <h2 className="text-xl font-semibold text-white">Tendencia de Ingresos</h2>
+                  </div>
+                  <div className="h-[300px] w-full">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={chartData}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                        <XAxis 
+                          dataKey="month" 
+                          stroke="#94a3b8" 
+                          fontSize={12} 
+                          tickLine={false} 
+                          axisLine={false} 
+                        />
+                        <YAxis 
+                          stroke="#94a3b8" 
+                          fontSize={12} 
+                          tickLine={false} 
+                          axisLine={false} 
+                          tickFormatter={(value) => `${value}€`}
+                        />
+                        <Tooltip 
+                          contentStyle={{ backgroundColor: '#1e1e2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
+                          itemStyle={{ color: '#60a5fa' }}
+                        />
+                        <Line 
+                          type="monotone" 
+                          dataKey="revenue" 
+                          stroke="#60a5fa" 
+                          strokeWidth={3} 
+                          dot={{ r: 4, fill: '#60a5fa', strokeWidth: 2, stroke: '#0a0a0c' }}
+                          activeDot={{ r: 6, strokeWidth: 0 }}
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+
+                <div className="glass p-6">
+                  <div className="flex items-center gap-2 mb-6 text-emerald-400">
+                    <BarChart3 size={20} />
+                    <h2 className="text-xl font-semibold text-white">Top Productos (Cant. Alquilada)</h2>
+                  </div>
+                  <div className="h-[300px] w-full">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={topProducts} layout="vertical">
+                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" horizontal={false} />
+                        <XAxis type="number" hide />
+                        <YAxis 
+                          dataKey="name" 
+                          type="category" 
+                          stroke="#94a3b8" 
+                          fontSize={12} 
+                          width={100}
+                          tickLine={false}
+                          axisLine={false}
+                        />
+                        <Tooltip 
+                          cursor={{ fill: 'rgba(255,255,255,0.05)' }}
+                          contentStyle={{ backgroundColor: '#1e1e2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
+                        />
+                        <Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={20}>
+                          {topProducts.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                          ))}
+                        </Bar>
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
             </div>
 
             {/* Main Content Layout */}
