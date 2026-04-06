@@ -1,4 +1,4 @@
-import { Package, Users, Calendar, TrendingUp, AlertCircle, History as HistoryIcon, BarChart3, LineChart as LineChartIcon } from 'lucide-react';
+import { Package, Users, Calendar, TrendingUp, AlertCircle, History as HistoryIcon, BarChart3, LineChart as LineChartIcon, Database, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { 
     LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
@@ -15,10 +15,11 @@ interface DashboardProps {
     recentRentals: any[]
     chartData: any[]
     topProducts: any[]
-    onAction: (action: 'client' | 'product' | 'rental') => void
+    onAction: (action: 'client' | 'product' | 'rental' | 'seed') => void
+    isSeeding?: boolean
 }
 
-export default function Dashboard({ stats, recentRentals, chartData, topProducts, onAction }: DashboardProps) {
+export default function Dashboard({ stats, recentRentals, chartData, topProducts, onAction, isSeeding }: DashboardProps) {
     const COLORS = ['#60a5fa', '#34d399', '#818cf8', '#f59e0b', '#ec4899'];
 
     return (
@@ -196,6 +197,25 @@ export default function Dashboard({ stats, recentRentals, chartData, topProducts
                             <Package size={18} />
                             Añadir Producto
                         </button>
+                        
+                        {/* Demo Mode Button (TFG Specific) */}
+                        <div className="pt-4 mt-4 border-t border-white/5">
+                            <button
+                                onClick={() => onAction('seed')}
+                                disabled={isSeeding}
+                                className="w-full p-3 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 transition-all font-semibold border border-emerald-500/30 flex items-center justify-center gap-2 group"
+                            >
+                                {isSeeding ? (
+                                    <Loader2 size={18} className="animate-spin" />
+                                ) : (
+                                    <Database size={18} className="group-hover:rotate-12 transition-transform" />
+                                )}
+                                {isSeeding ? 'Generando...' : 'Modo Demo: Cargar Datos'}
+                            </button>
+                            <p className="text-[10px] text-slate-500 text-center mt-2 px-4 italic">
+                                * Esto reseteará la BD y creará 30 alquileres de prueba para el TFG.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>

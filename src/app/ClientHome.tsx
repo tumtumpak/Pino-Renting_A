@@ -1,10 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useTransition } from 'react'
 import Dashboard from '../components/Dashboard'
 import NewClientModal from '../components/NewClientModal'
 import NewProductModal from '../components/NewProductModal'
 import NewRentalModal from '../components/NewRentalModal'
+import { seedDemoData } from '@/lib/seed-action'
 
 export default function HomePage({
     stats,
@@ -27,6 +28,24 @@ export default function HomePage({
     topProducts: any[]
 }) {
     const [modalOpen, setModalOpen] = useState<'client' | 'product' | 'rental' | null>(null)
+    const [isPending, startTransition] = useTransition()
+
+    const handleAction = (action: 'client' | 'product' | 'rental' | 'seed') => {
+        if (action === 'seed') {
+            if (confirm('¿Estás seguro? Esto borrará todos los datos actuales y cargará la demo del TFG.')) {
+                startTransition(async () => {
+                    const result = await seedDemoData()
+                    if (result.success) {
+                        alert('Demo cargada correctamente. La página se actualizará.')
+                    } else {
+                        alert('Error al cargar la demo: ' + result.error)
+                    }
+                })
+            }
+        } else {
+            setModalOpen(action)
+        }
+    }
 
     return (
         <>
@@ -35,7 +54,8 @@ export default function HomePage({
                 recentRentals={recentRentals}
                 chartData={chartData}
                 topProducts={topProducts}
-                onAction={(action: 'client' | 'product' | 'rental') => setModalOpen(action)}
+                onAction={handleAction}
+                isSeeding={isPending}
             />
 
             <NewClientModal
