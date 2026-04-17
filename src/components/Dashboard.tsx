@@ -178,21 +178,21 @@ export default function Dashboard({ stats, recentRentals, chartData, topProducts
                     <div className="space-y-3">
                         <button
                             onClick={() => onAction('rental')}
-                            className="w-full p-3 rounded-lg bg-blue-600 hover:bg-blue-500 transition-colors font-medium flex items-center justify-center gap-2"
+                            className="w-full p-3 rounded-lg bg-blue-600 hover:bg-blue-500 tap-scale transition-colors font-medium flex items-center justify-center gap-2"
                         >
                             <Calendar size={18} />
                             Nuevo Alquiler
                         </button>
                         <button
                             onClick={() => onAction('client')}
-                            className="w-full p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors font-medium border border-white/10 flex items-center justify-center gap-2"
+                            className="w-full p-3 rounded-lg bg-white/5 hover:bg-white/10 tap-scale transition-colors font-medium border border-white/10 flex items-center justify-center gap-2"
                         >
                             <Users size={18} />
                             Nuevo Cliente
                         </button>
                         <button
                             onClick={() => onAction('product')}
-                            className="w-full p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors font-medium border border-white/10 flex items-center justify-center gap-2"
+                            className="w-full p-3 rounded-lg bg-white/5 hover:bg-white/10 tap-scale transition-colors font-medium border border-white/10 flex items-center justify-center gap-2"
                         >
                             <Package size={18} />
                             Añadir Producto
@@ -203,7 +203,7 @@ export default function Dashboard({ stats, recentRentals, chartData, topProducts
                             <button
                                 onClick={() => onAction('seed')}
                                 disabled={isSeeding}
-                                className="w-full p-3 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 transition-all font-semibold border border-emerald-500/30 flex items-center justify-center gap-2 group"
+                                className="w-full p-3 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 tap-scale transition-all font-semibold border border-emerald-500/30 flex items-center justify-center gap-2 group"
                             >
                                 {isSeeding ? (
                                     <Loader2 size={18} className="animate-spin" />

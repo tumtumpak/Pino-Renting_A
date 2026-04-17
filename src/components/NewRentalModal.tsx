@@ -35,6 +35,15 @@ export default function NewRentalModal({
     const [venue, setVenue] = useState('')
     const [observations, setObservations] = useState('')
 
+    useEffect(() => {
+        if (isOpen) {
+            document.body.classList.add('no-scroll')
+        } else {
+            document.body.classList.remove('no-scroll')
+        }
+        return () => document.body.classList.remove('no-scroll')
+    }, [isOpen])
+
     if (!isOpen) return null
 
     const addItem = () => {
@@ -226,7 +235,7 @@ export default function NewRentalModal({
                         <button
                             disabled={loading || items.length === 0}
                             type="submit"
-                            className="w-full p-4 rounded-lg bg-blue-600 hover:bg-blue-500 disabled:opacity-50 transition-all font-bold shadow-lg shadow-blue-500/20"
+                            className="w-full p-4 rounded-lg bg-blue-600 hover:bg-blue-500 tap-scale disabled:opacity-50 transition-all font-bold shadow-lg shadow-blue-500/20"
                         >
                             {loading ? 'Validando Stock y Guardando...' : 'Confirmar Alquiler'}
                         </button>

@@ -1,11 +1,20 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { createProduct } from '@/lib/actions'
 import { X } from 'lucide-react'
 
 export default function NewProductModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
     const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        if (isOpen) {
+            document.body.classList.add('no-scroll')
+        } else {
+            document.body.classList.remove('no-scroll')
+        }
+        return () => document.body.classList.remove('no-scroll')
+    }, [isOpen])
 
     if (!isOpen) return null
 
@@ -77,7 +86,7 @@ export default function NewProductModal({ isOpen, onClose }: { isOpen: boolean, 
                     <button
                         disabled={loading}
                         type="submit"
-                        className="w-full p-4 rounded-lg bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 transition-all font-bold mt-4 shadow-lg shadow-emerald-500/20"
+                        className="w-full p-4 rounded-lg bg-emerald-600 hover:bg-emerald-500 tap-scale disabled:opacity-50 transition-all font-bold mt-4 shadow-lg shadow-emerald-500/20"
                     >
                         {loading ? 'Guardando...' : 'Añadir al Inventario'}
                     </button>

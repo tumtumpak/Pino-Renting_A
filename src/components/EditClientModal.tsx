@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { X, User, CreditCard, MessageSquare } from 'lucide-react'
 import { updateClient, deleteClient } from '@/lib/actions'
 
@@ -14,6 +14,15 @@ export default function EditClientModal({
     client: any
 }) {
     const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        if (isOpen) {
+            document.body.classList.add('no-scroll')
+        } else {
+            document.body.classList.remove('no-scroll')
+        }
+        return () => document.body.classList.remove('no-scroll')
+    }, [isOpen])
 
     if (!isOpen || !client) return null
 
@@ -101,14 +110,14 @@ export default function EditClientModal({
                             type="button"
                             onClick={handleDelete}
                             disabled={loading}
-                            className="flex-1 p-3 rounded-lg border border-red-500/20 text-red-500 hover:bg-red-500/10 transition-all font-semibold text-sm"
+                            className="flex-1 p-3 rounded-lg border border-red-500/20 text-red-500 hover:bg-red-500/10 tap-scale transition-all font-semibold text-sm"
                         >
                             Eliminar
                         </button>
                         <button
                             disabled={loading}
                             type="submit"
-                            className="flex-[2] p-3 rounded-lg bg-blue-600 hover:bg-blue-500 transition-all font-bold shadow-lg shadow-blue-500/20"
+                            className="flex-[2] p-3 rounded-lg bg-blue-600 hover:bg-blue-500 tap-scale transition-all font-bold shadow-lg shadow-blue-500/20"
                         >
                             {loading ? 'Guardando...' : 'Guardar Cambios'}
                         </button>

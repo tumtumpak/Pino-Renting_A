@@ -46,9 +46,24 @@ body {
 
 /* Hover Transitions */
 .hover-scale {
-  transition: transform 0.2s ease-out;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hover-scale:hover {
   transform: scale(1.02);
+}
+
+/* Tactile Feedback (PWA) */
+.tap-scale {
+  transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tap-scale:active {
+  transform: scale(0.96);
+}
+
+/* Modal Scroll Lock */
+.no-scroll {
+  overflow: hidden !important;
+  height: 100vh;
 }
